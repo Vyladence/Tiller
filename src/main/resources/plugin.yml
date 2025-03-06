@@ -1,0 +1,36 @@
+name: AutoReplant
+version: 1.0
+description: Automatically replants crops when harvested with specific tools.
+main: org.autoreplant.AutoReplant
+api-version: '1.21'
+authors: [ Vyladence ]
+
+commands:
+  autoreplant:
+    description: 'Main command for the AutoReplant plugin'
+    usage: /<command> <subcommand>
+    permission: autoreplant.use
+    aliases: [ar]
+    subcommands:
+      toggle:
+        description: 'Toggle autoreplant feature'
+        usage: /autoreplant toggle
+        permission: autoreplant.use
+      reload:
+        description: 'Reload the AutoReplant plugin configuration'
+        usage: /autoreplant reload
+        permission: autoreplant.reload
+
+permissions:
+  autoreplant.use:
+    description: Allows auto-replant and use of the autoreplant command
+    default: op
+  autoreplant.ignore_tool_restrictions:
+    description: Allows ignoring tool restrictions for autoreplant
+    default: false
+  autoreplant.bypass_item_durability:
+    description: Players with this permission will not lose durability on their tools when harvesting crops
+    default: false
+  autoreplant.command.reload:
+    description: Allows reloading the plugin's config
+    default: op

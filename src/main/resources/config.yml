@@ -1,0 +1,36 @@
+# Should auto-replant be enabled by default for players with the permission?
+default-enabled: true
+
+# Should the Fortune enchantment affect crop yields?
+use-fortune: true
+
+# If set to true, the durability of items will decrease when used to break crops.
+# NOTE: This only applies to Survival Mode
+item-damage: true
+
+# If a crop is not fully grown, should it be replanted on harvest?
+# True: Crops that are not fully grown will be replanted at their minimum age when broken (will not drop items).
+# False: Crops that are not fully grown will break and drop their respective items as usual.
+replant-unripe-crops: true
+
+# If set to true, the durability of items will decrease when used to break partially-grown crops.
+# Requires item-damage to be true
+unripe-crop-item-damage: false
+
+# Which items should auto-replant crops?
+allowed-items:
+  # Find item names here:
+  # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+  - NETHERITE_HOE
+  - DIAMOND_HOE
+  - IRON_HOE
+  - STONE_HOE
+  - GOLDEN_HOE
+  - WOODEN_HOE
+
+messages:
+  enabled: "&2Auto-replant &7is now &aEnabled"
+  disabled: "&2Auto-replant &7is now &cDisabled"
+  no_permission: "&4You don't have permission to use this command."
+  reloaded: "&8[&dAutoReplant&8] &aConfig reloaded!"
+  version-msg: "&8[&dAutoReplant&8] &fRunning AutoReplant &av%s &fby &cVyladence"
