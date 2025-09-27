@@ -3,6 +3,7 @@ version: 1.0
 description: Automatically replants crops when harvested with specific tools.
 main: org.tiller.Tiller
 api-version: '1.21'
+folia-supported: true
 authors: [ Vyladence ]
 
 commands:

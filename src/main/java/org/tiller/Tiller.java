@@ -1,12 +1,11 @@
-package org.autoreplant;
+package org.tiller;
 
 import net.md_5.bungee.api.ChatColor;
-import org.autoreplant.commands.AutoReplantCommand;
-import org.autoreplant.commands.CommandTabCompleter;
-import org.autoreplant.config.ConfigManager;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.plugin.Plugin;
+import org.tiller.commands.TillerCommand;
+import org.tiller.commands.CommandTabCompleter;
+import org.tiller.config.ConfigManager;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.command.CommandSender;
@@ -23,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public class Tiller extends JavaPlugin implements Listener {
@@ -32,11 +32,22 @@ public class Tiller extends JavaPlugin implements Listener {
     public final PluginDescriptionFile description = this.getDescription();
 
     private ConfigManager configManager;
+    private boolean IsFolia;
 
+    public static boolean isFolia() {
+        try {
+            // Folia-only class
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
 
     @Override
     public void onEnable() {
         configManager = new ConfigManager(this);
+        this.IsFolia = isFolia();
 
         // Register Command
         this.getCommand("tiller").setExecutor(new TillerCommand(this));
@@ -119,7 +130,27 @@ public class Tiller extends JavaPlugin implements Listener {
                 block.setBlockData(cropBlock);
             };
 
-            getServer().getScheduler().runTaskLater(this, replantTask, 1);
+
+            if (this.IsFolia) {
+                try {
+                    // Reflectively get RegionScheduler
+                    Object regionScheduler = Bukkit.getServer().getClass()
+                            .getMethod("getRegionScheduler")
+                            .invoke(Bukkit.getServer());
+
+                    // Call runDelayed(Plugin, Location, Consumer<Task>, long)
+                    regionScheduler.getClass()
+                            .getMethod("runDelayed", Plugin.class, Location.class, Consumer.class, long.class)
+                            .invoke(regionScheduler, this, block.getLocation(), (Consumer<Object>) task -> replantTask.run(), 1L);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                // Fallback to Bukkit/Paper scheduler
+                getServer().getScheduler().runTaskLater(this, replantTask, 1);
+            }
+
         }
 
         boolean shouldApplyItemDamage = !player.hasPermission("tiller.bypass_item_durability") &&
