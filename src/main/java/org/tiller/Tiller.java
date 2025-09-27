@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class AutoReplant extends JavaPlugin implements Listener {
+public class Tiller extends JavaPlugin implements Listener {
 
     private final HashMap<UUID, Boolean> loadedPlayers = new HashMap<>();
-    private final Logger logger = Logger.getLogger("AutoReplant");
+    private final Logger logger = Logger.getLogger("Tiller");
     public final PluginDescriptionFile description = this.getDescription();
 
     private ConfigManager configManager;
@@ -39,13 +39,13 @@ public class AutoReplant extends JavaPlugin implements Listener {
         configManager = new ConfigManager(this);
 
         // Register Command
-        this.getCommand("autoreplant").setExecutor(new AutoReplantCommand(this));
-        this.getCommand("autoreplant").setTabCompleter(new CommandTabCompleter());
+        this.getCommand("tiller").setExecutor(new TillerCommand(this));
+        this.getCommand("tiller").setTabCompleter(new CommandTabCompleter());
         // Register Listeners
         getServer().getPluginManager().registerEvents(this, this);
 
         loadPlayerStates();
-        log(String.format("AutoReplant v%s is now enabled", description.getVersion()));
+        log(String.format("Tiller v%s is now enabled", description.getVersion()));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AutoReplant extends JavaPlugin implements Listener {
         ItemStack tool = player.getInventory().getItemInMainHand();
 
         // If player does not have permission, cancel auto replanting
-        if (!player.hasPermission("autoreplant.use")) {
+        if (!player.hasPermission("tiller.use")) {
             return;
         }
 
@@ -78,7 +78,7 @@ public class AutoReplant extends JavaPlugin implements Listener {
         }
 
         // Check if the correct tool is used, or if the player has the ignore tool restrictions permission
-        if (!configManager.getAllowedItems().contains(tool.getType()) && !player.hasPermission("autoreplant.ignore_tool_restrictions")) {
+        if (!configManager.getAllowedItems().contains(tool.getType()) && !player.hasPermission("tiller.ignore_tool_restrictions")) {
             return;
         }
 
@@ -122,7 +122,7 @@ public class AutoReplant extends JavaPlugin implements Listener {
             getServer().getScheduler().runTaskLater(this, replantTask, 1);
         }
 
-        boolean shouldApplyItemDamage = !player.hasPermission("autoreplant.bypass_item_durability") &&
+        boolean shouldApplyItemDamage = !player.hasPermission("tiller.bypass_item_durability") &&
                 configManager.doItemDamage() &&
                 (!cropIsUnripe || configManager.doUnripeCropDamage());
 
