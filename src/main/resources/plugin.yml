@@ -10,21 +10,20 @@ commands:
   tiller:
     description: 'Main command for the Tiller plugin'
     usage: /<command> <subcommand>
-    permission: tiller.use
-    aliases: [ar]
+    permission: tiller.command
     subcommands:
       toggle:
         description: 'Toggle tiller feature'
-        usage: /tiller toggle
-        permission: tiller.use
+        usage: /tiller toggle <on|off|default>
+        permission: tiller.command.toggle
       reload:
         description: 'Reload the Tiller plugin configuration'
         usage: /tiller reload
-        permission: tiller.reload
+        permission: tiller.command.reload
 
 permissions:
   tiller.use:
-    description: Allows auto-replant and use of the tiller command
+    description: Allows auto-replant functionality
     default: op
   tiller.ignore_tool_restrictions:
     description: Allows ignoring tool restrictions for tiller
@@ -32,6 +31,12 @@ permissions:
   tiller.bypass_item_durability:
     description: Players with this permission will not lose durability on their tools when harvesting crops
     default: false
+  tiller.command:
+    description: Allows usage of the base tiller command displaying version info
+    default: op
+  tiller.command.toggle:
+    description: Allows users to toggle auto-replanting on and off
+    default: op
   tiller.command.reload:
     description: Allows reloading the plugin's config
     default: op

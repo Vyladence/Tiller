@@ -1,0 +1,13 @@
+package org.tiller.commands;
+
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
+
+public interface TillerSubcommand {
+    String getName();
+    String getDescription();
+    String getPermission();
+    boolean execute(CommandSender sender, String[] args);
+    List<String> tabComplete(CommandSender sender, String[] args);
+}

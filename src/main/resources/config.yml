@@ -31,6 +31,7 @@ allowed-items:
 messages:
   enabled: "&2Auto-replant &7is now &aEnabled"
   disabled: "&2Auto-replant &7is now &cDisabled"
+  unset: "&2Auto-replant has been reset to default"
   no_permission: "&4You don't have permission to use this command."
   reloaded: "&8[&dTiller&8] &aConfig reloaded!"
   version-msg: "&8[&dTiller&8] &fRunning Tiller &av%s &fby &cVyladence"
